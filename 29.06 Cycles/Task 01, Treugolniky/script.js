@@ -8,8 +8,8 @@ for (var row = 0; row < height; row++) {
     document.write("<br>");
 }
 
-for (var row = 0; row < height; row++) {
-    for (var symbol = 1; symbol <= height + row; symbol++) {
+for (row = 0; row < height; row++) {
+    for (symbol = 1; symbol <= height + row; symbol++) {
         if (symbol === height - row || symbol === height + row || row === height - 1) document.write("* ");
         else document.write("&nbsp; &nbsp;");
     }
