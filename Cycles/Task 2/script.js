@@ -4,5 +4,5 @@ var c = parseInt(prompt("Enter C"));
 
 while (a < b) {
     console.log(a);
-    a = a + c;
+    a += c;
 }
