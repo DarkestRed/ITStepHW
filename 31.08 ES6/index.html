@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .book {
+            margin-bottom: 20px;
+        }
+
+        button {
+            margin: 10px;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <h2>Библиотека</h2>
+    <button id="showAll">Показать все книги</button>
+    <div id="showLib"></div>
+</div>
+<div>
+    <h2>Добавить книгу</h2>
+    <span>Название</span><br>
+    <input type="text" id="title"><br>
+    <span>Автор</span><br>
+    <input type="text" id="author"><br>
+    <span>Год</span><br>
+    <input type="number" id="year"><br>
+    <button id="addBookBtn">Добавить</button>
+</div>
+<div>
+    <h2>Удалить книгу</h2>
+    <span>Введите номер</span><br>
+    <input type="number" id="delNumber"><br>
+    <button id="delBookBtn">Удалить</button>
+</div>
+<div>
+    <h2>Найти книгу по автору</h2>
+    <span>Введите автора</span><br>
+    <input type="text" id="authFilter"><br>
+    <button id="authFilterBtn">Найти</button>
+</div>
+<script>
+    class Book {
+        constructor(title, author, year) {
+            this.title = title;
+            this.author = author;
+            this.year = year;
+        }
+
+        asHTML() {
+            return `
+            <div class="book">
+                <div class="title">${this.title}</div>
+                <div class="author">${this.author}</div>
+                <div class="year">${this.year}</div>
+            </div>
+        `;
+        }
+    }
+
+    class Library {
+        constructor() {
+            this.books = [];
+        }
+
+        addBook(book) {
+            this.books.push(book);
+        }
+
+        delBookByNumber(num) {
+            this.books.splice(num - 1, 1);
+        }
+
+        getAllBooks() {
+            return this.books;
+        }
+
+        getByAuthor(auth) {
+            return this.books.filter(b => b.author === auth);
+        }
+    }
+
+    let showAllBtn = document.getElementById("showAll");
+    let libraryElem = document.getElementById("showLib");
+
+    let addTitle = document.getElementById("title");
+    let addAuthor = document.getElementById("author");
+    let addYear = document.getElementById("year");
+    let addBookBtn = document.getElementById("addBookBtn");
+
+    let delNumber = document.getElementById("delNumber");
+    let delBtn = document.getElementById("delBookBtn");
+
+    let authFilterName = document.getElementById("authFilter");
+    let authFilterBtn = document.getElementById("authFilterBtn");
+
+    function showBooks(books) {
+        let bookHTML = "";
+        books.forEach(b => bookHTML += books.indexOf(b) + 1 + b.asHTML());
+        libraryElem.innerHTML = bookHTML;
+    }
+
+    let library = new Library();
+    library.addBook(new Book("Жизнь Петрова", "Петров", "1975"));
+    library.addBook(new Book("Жизнь Иванова", "Иванов", "1985"));
+    library.addBook(new Book("Жизнь Сидорова", "Сидоров", "1995"));
+    showBooks(library.getAllBooks());
+
+    showAllBtn.onclick = function () {
+        showBooks(library.getAllBooks());
+    };
+
+    addBookBtn.onclick = function () {
+        if (addTitle.value) {
+            library.addBook(new Book(addTitle.value, addAuthor.value, parseInt(addYear.value)));
+        }
+        showBooks(library.getAllBooks());
+    };
+
+    delBtn.onclick = function () {
+        if (delNumber.value > 0) library.delBookByNumber(delNumber.value);
+        showBooks(library.getAllBooks());
+    };
+
+    authFilterBtn.onclick = function () {
+        showBooks(library.getByAuthor(authFilterName.value));
+    }
+</script>
+</body>
